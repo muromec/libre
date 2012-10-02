@@ -113,7 +113,9 @@ int sipsess_reply_2xx(struct sipsess *sess, const struct sip_msg *msg,
 		goto out;
 
 	tmr_start(&reply->tmr, 64 * SIP_T1, tmr_handler, reply);
-	tmr_start(&reply->tmrg, SIP_T1, retransmit_handler, reply);
+
+	if (!sip_transp_reliable(msg->tp))
+		tmr_start(&reply->tmrg, SIP_T1, retransmit_handler, reply);
 
 	if (!mbuf_get_left(msg->mb) && desc) {
 		reply->awaiting_answer = true;
