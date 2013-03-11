@@ -121,6 +121,24 @@ static void keepalive_handler(int err, void *arg)
 	reg->resph(err, NULL, reg->arg);
 }
 
+int sipreg_expires(struct sipreg *reg, uint32_t expires)
+{
+	int err;
+
+	if(reg->expires == expires)
+		return 0;
+
+	tmr_cancel(&reg->tmr);
+
+	reg->expires = expires;
+	err = request(reg, true);
+	if (err) {
+		tmr_start(&reg->tmr, failwait(++reg->failc), tmr_handler, reg);
+		reg->resph(err, NULL, reg->arg);
+	}
+
+	return err;
+}
 
 static void start_outbound(struct sipreg *reg, const struct sip_msg *msg)
 {
