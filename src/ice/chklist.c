@@ -290,3 +290,12 @@ const struct sa *icem_selected_laddr(const struct icem *icem, uint8_t compid)
 
 	return &comp->cp_sel->lcand->addr;
 }
+
+const struct sa *icem_selected_raddr(const struct icem *icem, uint8_t compid)
+{
+	const struct icem_comp *comp = icem_comp_find(icem, compid);
+	if (!comp || !comp->cp_sel)
+		return NULL;
+
+	return &comp->cp_sel->rcand->addr;
+}

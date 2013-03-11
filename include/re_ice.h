@@ -72,6 +72,7 @@ int  icem_debug(struct re_printf *pf, const struct icem *icem);
 struct list *icem_lcandl(const struct icem *icem);
 const struct sa *icem_cand_default(struct icem *icem, uint8_t compid);
 const struct sa *icem_selected_laddr(const struct icem *icem, uint8_t compid);
+const struct sa *icem_selected_raddr(const struct icem *icem, uint8_t compid);
 
 
 struct cand;
