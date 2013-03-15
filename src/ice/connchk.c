@@ -404,6 +404,12 @@ void icem_conncheck_stop(struct icem *icem)
 {
 	struct le *le;
 
+	for (le = icem->checkl.head; le; le = le->next) {
+		struct candpair *cp = le->data;
+		if(!icem_candpair_iscompleted(cp))
+			return;
+	}
+
 	icem->state = CHECKLIST_COMPLETED;
 
 	tmr_cancel(&icem->tmr_pace);
