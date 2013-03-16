@@ -15,3 +15,4 @@ int sipreg_register(struct sipreg **regp, struct sip *sip, const char *reg_uri,
 		    const char *params, const char *fmt, ...);
 
 int sipreg_expires(struct sipreg *reg, uint32_t expires);
+int sipreg_headers(struct sipreg *reg, const char *fmt, ...);

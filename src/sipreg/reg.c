@@ -140,6 +140,34 @@ int sipreg_expires(struct sipreg *reg, uint32_t expires)
 	return err;
 }
 
+int sipreg_headers(struct sipreg *reg, const char *fmt, ...)
+{
+	int err;
+
+	if(!reg || !fmt)
+		return EINVAL;
+
+	va_list ap;
+
+	if (!reg->hdrs) {
+		reg->hdrs = mbuf_alloc(256);
+		if(!reg->hdrs) {
+			err = ENOMEM;
+			goto out;
+		}
+	}
+	reg->hdrs->pos = 0;
+
+	va_start(ap, fmt);
+	err = mbuf_vprintf(reg->hdrs, fmt, ap);
+	reg->hdrs->pos = 0;
+	va_end(ap);
+
+out:
+	return err;
+}
+
+
 static void start_outbound(struct sipreg *reg, const struct sip_msg *msg)
 {
 	const struct sip_hdr *flowtimer;
